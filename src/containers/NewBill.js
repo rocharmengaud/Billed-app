@@ -27,7 +27,7 @@ export default class NewBill {
     const extensions = ['jpg', 'jpeg', 'png'];
     const fileExtension = file.name.split('.').pop();
     if (extensions.includes(fileExtension)) {
-      console.log('fichier bon');
+      // console.log('fichier bon');
       this.store
         .bills()
         .create({

@@ -82,24 +82,24 @@ export default class {
   };
 
   handleEditTicket(e, bill, bills) {
-    if (this.counter === undefined || this.id !== bill.id) this.counter = 0;
-    if (this.id === undefined || this.id !== bill.id) this.id = bill.id;
-    if (this.counter % 2 === 0) {
+    // Si on re clique sur le même bill (pour le refermer)
+    if (this.id === bill.id) {
+      // undefined ici nous permet de savoir que nous n'avons aucun bill ouvert
+      this.id = undefined;
+      $(`#open-bill${bill.id}`).css({ background: '#0D5AE5' });
+      $('.dashboard-right-container div').html(`
+      <div id="big-billed-icon" data-testid="big-billed-icon"> ${BigBilledIcon} </div>
+      `);
+      $('.vertical-navbar').css({ height: '120vh' });
+    } else {
+      // sois pas de bill ouvert au prealable sois un clic sur un autre bill pendant que le premier est deja ouvert
+      this.id = bill.id;
       bills.forEach((b) => {
         $(`#open-bill${b.id}`).css({ background: '#0D5AE5' });
       });
       $(`#open-bill${bill.id}`).css({ background: '#2A2B35' });
       $('.dashboard-right-container div').html(DashboardFormUI(bill));
       $('.vertical-navbar').css({ height: '150vh' });
-      this.counter++;
-    } else {
-      $(`#open-bill${bill.id}`).css({ background: '#0D5AE5' });
-
-      $('.dashboard-right-container div').html(`
-        <div id="big-billed-icon" data-testid="big-billed-icon"> ${BigBilledIcon} </div>
-      `);
-      $('.vertical-navbar').css({ height: '120vh' });
-      this.counter++;
     }
     $('#icon-eye-d').click(this.handleClickIconEye);
     $('#btn-accept-bill').click((e) => this.handleAcceptSubmit(e, bill));
@@ -127,22 +127,38 @@ export default class {
   };
 
   handleShowTickets(e, bills, index) {
-    if (this.counter === undefined || this.index !== index) this.counter = 0;
-    if (this.index === undefined || this.index !== index) this.index = index;
-    if (this.counter % 2 === 0) {
+    // ici on démarre avec un tableau vide si c'est la 1ere fois qu'on passe dans la fonction
+    if (this.dropdownStatus === undefined)
+      this.dropdownStatus = [
+        /*false, false, false*/
+      ];
+
+    // this.index = correspond a l'index de la fleche cliquée précédemment
+    // index correspond a l'index de la fleche cliquée actuellement
+    this.index = index;
+    // ici l'index ne commence pas a 0 donc, on doit y mettre -1 pour avoir le bon ordre
+    if (this.dropdownStatus[index - 1] === true) this.dropdownStatus[index - 1] = false;
+    else this.dropdownStatus[index - 1] = true;
+
+    if (this.dropdownStatus[index - 1] === true) {
+      // menu ouvert
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(0deg)' });
       $(`#status-bills-container${this.index}`).html(cards(filteredBills(bills, getStatus(this.index))));
-      this.counter++;
     } else {
+      // menu fermé
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)' });
       $(`#status-bills-container${this.index}`).html('');
-      this.counter++;
     }
 
-    // variable a remplacer avec un array des bills
+    // console.log(this.dropdownStatus);
+    // console.log(this.index);
+
     bills.forEach((bill) => {
-      // on ecoute le click
+      // on enleve l'event listener sur tous les bills avant de les reset
+      $(`#open-bill${bill.id}`).off('click');
+      // lors du click on execute la fonction handleEditTicket avec en parametre le bill en question
       $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills));
+      console.log(bill.id);
     });
 
     return bills;
