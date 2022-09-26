@@ -128,11 +128,7 @@ export default class {
 
   handleShowTickets(e, bills, index) {
     // ici on démarre avec un tableau vide si c'est la 1ere fois qu'on passe dans la fonction
-    if (this.dropdownStatus === undefined)
-      this.dropdownStatus = [
-        /*false, false, false*/
-      ];
-
+    if (this.dropdownStatus === undefined) this.dropdownStatus = [];
     // this.index = correspond a l'index de la fleche cliquée précédemment
     // index correspond a l'index de la fleche cliquée actuellement
     this.index = index;
@@ -149,9 +145,6 @@ export default class {
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)' });
       $(`#status-bills-container${this.index}`).html('');
     }
-
-    // console.log(this.dropdownStatus);
-    // console.log(this.index);
 
     bills.forEach((bill) => {
       // on enleve l'event listener sur tous les bills avant de les reset

@@ -122,13 +122,7 @@ describe('Given I am connected as an Admin', () => {
       document.body.innerHTML = DashboardUI({ data: { bills } });
 
       const handleShowTickets1 = jest.fn((e) => dashboard.handleShowTickets(e, bills, 1));
-      // const handleShowTickets2 = jest.fn((e) => dashboard.handleShowTickets(e, bills, 2));
-      // const handleShowTickets3 = jest.fn((e) => dashboard.handleShowTickets(e, bills, 3));
-
       const icon1 = screen.getByTestId('arrow-icon1');
-      // const icon2 = screen.getByTestId('arrow-icon2');
-      // const icon3 = screen.getByTestId('arrow-icon3');
-
       icon1.addEventListener('click', handleShowTickets1);
       userEvent.click(icon1);
       expect(handleShowTickets1).toHaveBeenCalled();
@@ -136,22 +130,6 @@ describe('Given I am connected as an Admin', () => {
       const iconEdit = screen.getByTestId('open-bill47qAXb6fIm2zOKkLzMro');
       userEvent.click(iconEdit);
       expect(screen.getByTestId(`dashboard-form`)).toBeTruthy();
-
-      // icon2.addEventListener('click', handleShowTickets2);
-      // userEvent.click(icon2);
-      // expect(handleShowTickets2).toHaveBeenCalled();
-      // expect(screen.getByTestId(`open-billUIUZtnPQvnbFnB0ozvJh`)).toBeTruthy();
-      // const iconEdit2 = screen.getByTestId('open-billUIUZtnPQvnbFnB0ozvJh');
-      // userEvent.click(iconEdit2);
-      // expect(screen.getByTestId(`dashboard-form`)).toBeTruthy();
-
-      // icon3.addEventListener('click', handleShowTickets3);
-      // userEvent.click(icon3);
-      // expect(handleShowTickets3).toHaveBeenCalled();
-      // expect(screen.getByTestId(`open-billBeKy5Mo4jkmdfPGYpTxZ`)).toBeTruthy();
-      // const iconEdit3 = screen.getByTestId('open-billBeKy5Mo4jkmdfPGYpTxZ');
-      // userEvent.click(iconEdit3);
-      // expect(screen.getByTestId(`dashboard-form`)).toBeTruthy();
     });
   });
 

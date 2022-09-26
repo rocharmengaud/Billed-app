@@ -24,10 +24,10 @@ export default class NewBill {
     const email = JSON.parse(localStorage.getItem('user')).email;
     formData.append('file', file);
     formData.append('email', email);
+
     const extensions = ['jpg', 'jpeg', 'png'];
     const fileExtension = file.name.split('.').pop();
     if (extensions.includes(fileExtension)) {
-      // console.log('fichier bon');
       this.store
         .bills()
         .create({
@@ -37,7 +37,6 @@ export default class NewBill {
           },
         })
         .then(({ fileUrl, key }) => {
-          // console.log(fileUrl);
           this.billId = key;
           this.fileUrl = fileUrl;
           this.fileName = fileName;
@@ -46,24 +45,8 @@ export default class NewBill {
     } else {
       alert('Veuillez choisir un format de fichier .jpg, .jpeg ou .png');
     }
-
-    // A ENLEVER
-    // this.store
-    //   .bills()
-    //   .create({
-    //     data: formData,
-    //     headers: {
-    //       noContentType: true,
-    //     },
-    //   })
-    //   .then(({ fileUrl, key }) => {
-    //     // console.log(fileUrl);
-    //     this.billId = key;
-    //     this.fileUrl = fileUrl;
-    //     this.fileName = fileName;
-    //   })
-    //   .catch((error) => console.error(error));
   };
+
   handleSubmit = (e) => {
     e.preventDefault();
     console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value);
