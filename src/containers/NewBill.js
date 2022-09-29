@@ -1,6 +1,8 @@
 import { ROUTES_PATH } from '../constants/routes.js';
 import Logout from './Logout.js';
 
+export let formatPicture = 0;
+
 export default class NewBill {
   constructor({ document, onNavigate, store, localStorage }) {
     this.document = document;
@@ -25,9 +27,10 @@ export default class NewBill {
     formData.append('file', file);
     formData.append('email', email);
 
-    const extensions = ['jpg', 'jpeg', 'png'];
-    const fileExtension = file.name.split('.').pop();
-    if (extensions.includes(fileExtension)) {
+    // const extensions = ['jpg', 'jpeg', 'png'];
+    // const fileExtension = file.name.split('.').pop();
+    if (file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/jpeg') {
+      formatPicture = 1;
       this.store
         .bills()
         .create({
@@ -43,34 +46,39 @@ export default class NewBill {
         })
         .catch((error) => console.error(error));
     } else {
-      alert('Veuillez choisir un format de fichier .jpg, .jpeg ou .png');
+      formatPicture = 0;
+      alert('Veuillez remplacer votre fichier avec un fichier de format .jpg, .jpeg ou .png svp');
     }
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value);
-    const email = JSON.parse(localStorage.getItem('user')).email;
-    const bill = {
-      email,
-      type: e.target.querySelector(`select[data-testid="expense-type"]`).value,
-      name: e.target.querySelector(`input[data-testid="expense-name"]`).value,
-      amount: parseInt(e.target.querySelector(`input[data-testid="amount"]`).value),
-      date: e.target.querySelector(`input[data-testid="datepicker"]`).value,
-      vat: e.target.querySelector(`input[data-testid="vat"]`).value,
-      pct: parseInt(e.target.querySelector(`input[data-testid="pct"]`).value) || 20,
-      commentary: e.target.querySelector(`textarea[data-testid="commentary"]`).value,
-      fileUrl: this.fileUrl,
-      fileName: this.fileName,
-      status: 'pending',
-    };
-    this.updateBill(bill);
-    this.onNavigate(ROUTES_PATH['Bills']);
+
+    if (formatPicture > 0) {
+      console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value);
+      const email = JSON.parse(localStorage.getItem('user')).email;
+      const bill = {
+        email,
+        type: e.target.querySelector(`select[data-testid="expense-type"]`).value,
+        name: e.target.querySelector(`input[data-testid="expense-name"]`).value,
+        amount: parseInt(e.target.querySelector(`input[data-testid="amount"]`).value),
+        date: e.target.querySelector(`input[data-testid="datepicker"]`).value,
+        vat: e.target.querySelector(`input[data-testid="vat"]`).value,
+        pct: parseInt(e.target.querySelector(`input[data-testid="pct"]`).value) || 20,
+        commentary: e.target.querySelector(`textarea[data-testid="commentary"]`).value,
+        fileUrl: this.fileUrl,
+        fileName: this.fileName,
+        status: 'pending',
+      };
+
+      this.updateBill(bill);
+      this.onNavigate(ROUTES_PATH['Bills']);
+    }
   };
 
   // not need to cover this function by tests
   updateBill = (bill) => {
-    if (this.store) {
+    if (this.store && formatPicture > 0) {
       this.store
         .bills()
         .update({ data: JSON.stringify(bill), selector: this.billId })
