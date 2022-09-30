@@ -82,6 +82,9 @@ export default class {
   };
 
   handleEditTicket(e, bill, bills) {
+    // même principe que tout à l'heure, this.id correspond au bill cliqué précédemment et bill.id au bill cliqué actuellement
+    console.log(this.id);
+    console.log(bill.id);
     // Si on re clique sur le même bill (pour le refermer)
     if (this.id === bill.id) {
       // undefined ici nous permet de savoir que nous n'avons aucun bill ouvert
@@ -126,15 +129,22 @@ export default class {
     this.onNavigate(ROUTES_PATH['Dashboard']);
   };
 
+  // Fonction qui gére les dropdown arrows
   handleShowTickets(e, bills, index) {
     // ici on démarre avec un tableau vide si c'est la 1ere fois qu'on passe dans la fonction
     if (this.dropdownStatus === undefined) this.dropdownStatus = [];
     // this.index = correspond a l'index de la fleche cliquée précédemment
+    console.log(this.index);
     // index correspond a l'index de la fleche cliquée actuellement
+    console.log(index);
+    // on fait donc en sorte que ce sois la même lorsqu'on clique
     this.index = index;
+    console.log(index);
     // ici l'index ne commence pas a 0 donc, on doit y mettre -1 pour avoir le bon ordre
+    console.log(this.dropdownStatus[index - 1]);
     if (this.dropdownStatus[index - 1] === true) this.dropdownStatus[index - 1] = false;
     else this.dropdownStatus[index - 1] = true;
+    console.log(this.dropdownStatus[index - 1]);
 
     if (this.dropdownStatus[index - 1] === true) {
       // menu ouvert
@@ -147,11 +157,11 @@ export default class {
     }
 
     bills.forEach((bill) => {
-      // on enleve l'event listener sur tous les bills avant de les reset
+      console.log(bill.id);
+      // on enleve l'event listener sur tous les bills avec un .off (il y avait un probleme avec deux event en même temps)
       $(`#open-bill${bill.id}`).off('click');
       // lors du click on execute la fonction handleEditTicket avec en parametre le bill en question
       $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills));
-      console.log(bill.id);
     });
 
     return bills;
