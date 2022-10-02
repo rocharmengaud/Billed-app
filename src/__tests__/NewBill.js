@@ -84,9 +84,9 @@ describe('Given I am connected as an employee', () => {
   describe('Given i am connected as an employee', () => {
     describe('When I am on NewBills Page', () => {
       test('send bills to API, method POST', async () => {
+        // permet de simuler le comportement de la page web
         Object.defineProperty(window, 'localStorage', { value: localStorageMock });
         Object.defineProperty(window, 'location', { value: { hash: ROUTES_PATH['NewBill'] } });
-
         window.localStorage.setItem('user', JSON.stringify({ type: 'Employee' }));
         document.body.innerHTML = `<div id="root"></div>`;
         Router();
@@ -94,6 +94,7 @@ describe('Given I am connected as an employee', () => {
         const newBill = new NewBill({ document, onNavigate, store: mockStore, localStorage: window.localStorage });
         const handleChangeFile = jest.fn((e) => newBill.handleChangeFile(e));
 
+        // on recupere les champs du formulaire avec des screen.getByTestId
         const inputType = screen.getByTestId('expense-type');
         const inputName = screen.getByTestId('expense-name');
         const inputDate = screen.getByTestId('datepicker');
@@ -104,8 +105,10 @@ describe('Given I am connected as an employee', () => {
         const inputFile = screen.getByTestId('file');
         const img = new File(['img'], 'image.png', { type: 'image/png' });
 
+        // recuperation de la fonction pour la creation du bill : voir dans containers/newbill.js
         const handleSubmit = jest.fn((e) => newBill.handleSubmit(e));
 
+        // de maniere a les remplir a cet endroit
         inputType.value = 'Transports';
         inputName.value = 'Vol Toulouse Paris';
         inputDate.value = '2022-01-25';
@@ -118,6 +121,8 @@ describe('Given I am connected as an employee', () => {
           userEvent.upload(inputFile, [img]);
         });
 
+        // .validity représente un ensemble d'état du champ, dans ce cas la on l'accompagne avec
+        // .valid qui est un booléen qui est true si le champ en question est bien rempli
         expect(inputType.validity.valid).toBeTruthy();
         expect(inputName.validity.valid).toBeTruthy();
         expect(inputDate.validity.valid).toBeTruthy();
@@ -125,10 +130,11 @@ describe('Given I am connected as an employee', () => {
         expect(inputVat.validity.valid).toBeTruthy();
         expect(inputPct.validity.valid).toBeTruthy();
         expect(inputComment.validity.valid).toBeTruthy();
+        // .files est un array donc on lui donne l'index 0
         expect(inputFile.files[0]).toBeDefined();
 
         const formulaire = screen.getByTestId('form-new-bill');
-        expect(formulaire).toBeTruthy;
+        expect(formulaire).toBeTruthy();
         formulaire.addEventListener('submit', handleSubmit);
 
         fireEvent.submit(formulaire);
