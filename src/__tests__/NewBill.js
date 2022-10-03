@@ -18,7 +18,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/dom';
 
 describe('Given I am connected as an employee', () => {
   describe('When I am on NewBill Page', () => {
-    test('Then mail icon in vertical layout should be highlighted', () => {
+    test('Then the mail icon in vertical layout should be highlighted', () => {
       Object.defineProperty(window, 'localStorage', { value: localStorageMock });
       Object.defineProperty(window, 'location', { value: { hash: ROUTES_PATH['NewBill'] } });
 
@@ -32,7 +32,7 @@ describe('Given I am connected as an employee', () => {
   });
 
   describe('When I am on NewBill Page and i click on button chose a file', () => {
-    test('Then i can choose to upload a file with good extension (jpg|jpeg|png)', async () => {
+    test('Then i can choose to upload a file with correct extension (jpg|jpeg|png)', async () => {
       Object.defineProperty(window, 'localStorage', { value: localStorageMock });
       Object.defineProperty(window, 'location', { value: { hash: ROUTES_PATH['NewBill'] } });
 
@@ -57,7 +57,7 @@ describe('Given I am connected as an employee', () => {
       expect(icon.className).toBe('active-icon');
       expect(formatPicture).not.toBe(0);
     });
-    test('Then i can choose to upload a file with bad extension', async () => {
+    test('Then i can choose to upload a file with incorrect extension', async () => {
       Object.defineProperty(window, 'localStorage', { value: localStorageMock });
       Object.defineProperty(window, 'location', { value: { hash: ROUTES_PATH['NewBill'] } });
 
@@ -83,7 +83,7 @@ describe('Given I am connected as an employee', () => {
   // Test d'integration POST
   describe('Given i am connected as an employee', () => {
     describe('When I am on NewBills Page', () => {
-      test('send bills to API, method POST', async () => {
+      test('send bills to API, POST method', async () => {
         // permet de simuler le comportement de la page web
         Object.defineProperty(window, 'localStorage', { value: localStorageMock });
         Object.defineProperty(window, 'location', { value: { hash: ROUTES_PATH['NewBill'] } });
