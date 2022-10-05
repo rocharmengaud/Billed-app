@@ -134,12 +134,9 @@ export default class {
     // ici on démarre avec un tableau vide si c'est la 1ere fois qu'on passe dans la fonction
     if (this.dropdownStatus === undefined) this.dropdownStatus = [];
     // this.index = correspond a l'index de la fleche cliquée précédemment
-    console.log(this.index);
     // index correspond a l'index de la fleche cliquée actuellement
-    console.log(index);
     // on fait donc en sorte que ce sois la même lorsqu'on clique
     this.index = index;
-    console.log(index);
     // ici l'index ne commence pas a 0 donc, on doit y mettre -1 pour avoir le bon ordre
     console.log(this.dropdownStatus[index - 1]);
     if (this.dropdownStatus[index - 1] === true) this.dropdownStatus[index - 1] = false;

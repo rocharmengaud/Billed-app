@@ -91,6 +91,7 @@ describe('Given I am connected as an employee', () => {
         document.body.innerHTML = `<div id="root"></div>`;
         Router();
 
+        // simulation du post
         const newBill = new NewBill({ document, onNavigate, store: mockStore, localStorage: window.localStorage });
         const handleChangeFile = jest.fn((e) => newBill.handleChangeFile(e));
 

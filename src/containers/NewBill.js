@@ -53,9 +53,8 @@ export default class NewBill {
 
   handleSubmit = (e) => {
     e.preventDefault();
-
+    // affichage du bill une fois submitted
     if (formatPicture > 0) {
-      console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value);
       const email = JSON.parse(localStorage.getItem('user')).email;
       const bill = {
         email,
