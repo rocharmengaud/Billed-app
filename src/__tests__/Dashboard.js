@@ -13,7 +13,7 @@ import mockStore from '../__mocks__/store';
 import { bills } from '../fixtures/bills';
 import router from '../app/Router';
 
-jest.mock('../app/store', () => mockStore);
+jest.mock('../app/Store.js', () => mockStore);
 
 describe('Given I am connected as an Admin', () => {
   describe('When I am on Dashboard page, there are bills, and there is one pending', () => {
@@ -83,7 +83,6 @@ describe('Given I am connected as an Admin', () => {
       expect(handleShowTickets1).toHaveBeenCalled();
       await waitFor(() => screen.getByTestId(`open-bill47qAXb6fIm2zOKkLzMro`));
       expect(screen.getByTestId(`open-bill47qAXb6fIm2zOKkLzMro`)).toBeTruthy();
-
       icon2.addEventListener('click', handleShowTickets2);
       userEvent.click(icon2);
       expect(handleShowTickets2).toHaveBeenCalled();
@@ -120,7 +119,6 @@ describe('Given I am connected as an Admin', () => {
         localStorage: window.localStorage,
       });
       document.body.innerHTML = DashboardUI({ data: { bills } });
-
       const handleShowTickets1 = jest.fn((e) => dashboard.handleShowTickets(e, bills, 1));
       const icon1 = screen.getByTestId('arrow-icon1');
       icon1.addEventListener('click', handleShowTickets1);
@@ -247,7 +245,7 @@ describe('Given I am connected as Admin, and I am on Dashboard page, and I click
 
 describe('Given I am connected as Admin and I am on Dashboard page and I clicked on a bill', () => {
   describe('When I click on the icon eye', () => {
-    test('Correct modal should open', () => {
+    test('A modal should open', () => {
       Object.defineProperty(window, 'localStorage', { value: localStorageMock });
       window.localStorage.setItem(
         'user',
