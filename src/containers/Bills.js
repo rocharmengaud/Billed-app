@@ -36,6 +36,9 @@ export default class {
         .bills()
         .list()
         .then((snapshot) => {
+          snapshot.sort((billA, billB) => {
+            return billA.date < billB.date ? 1 : -1;
+          });
           const bills = snapshot.map((doc) => {
             try {
               return {
@@ -46,7 +49,7 @@ export default class {
             } catch (e) {
               // if for some reason, corrupted data was introduced, we manage here failing formatDate function
               // log the error and return unformatted date in that case
-              console.log(e, 'for', doc);
+              // console.log(e, 'for', doc);
               return {
                 ...doc,
                 date: doc.date,
@@ -54,7 +57,7 @@ export default class {
               };
             }
           });
-          // console.log('length', bills.length);
+
           return bills;
         });
     }
